@@ -49288,6 +49288,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__helpers_auth__["a" /* getLocalUse
         },
         loginSuccess: function loginSuccess(state, payload) {
             state.auth_error = null, state.loading = false, state.isLoggedIn = true, state.currentUser = Object.assign({}, payload.user, { token: payload.access_token });
+            Object(__WEBPACK_IMPORTED_MODULE_0__helpers_auth__["c" /* setLocalUser */])(payload.access_token);
         },
         loginFailed: function loginFailed(state, payload) {
             state.loading = false;
@@ -49336,6 +49337,7 @@ var user = Object(__WEBPACK_IMPORTED_MODULE_0__helpers_auth__["a" /* getLocalUse
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["b"] = login;
 /* harmony export (immutable) */ __webpack_exports__["a"] = getLocalUser;
+/* harmony export (immutable) */ __webpack_exports__["c"] = setLocalUser;
 function login(credientials) {
     return new Promise(function (res, rej) {
         axios.post('/api/auth/login', credientials).then(function (response) {
@@ -49353,7 +49355,11 @@ function getLocalUser() {
         return null;
     }
 
-    return JSON.parse(Userstr);
+    return JSON.stringify(Userstr);
+}
+
+function setLocalUser(access_token) {
+    localStorage.setItem("user", access_token);
 }
 
 /***/ }),

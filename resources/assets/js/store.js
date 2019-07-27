@@ -1,4 +1,4 @@
-import {getLocalUser} from "./helpers/auth";
+import {getLocalUser,  setLocalUser} from "./helpers/auth";
 const user = getLocalUser();
 
 export default{
@@ -21,6 +21,7 @@ export default{
             state.loading = false,
             state.isLoggedIn = true,
             state.currentUser= Object.assign({}, payload.user, {token: payload.access_token});
+            setLocalUser(payload.access_token);
         },
         loginFailed(state, payload){
             state.loading = false;

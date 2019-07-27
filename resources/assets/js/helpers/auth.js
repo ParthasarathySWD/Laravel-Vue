@@ -17,5 +17,9 @@ export function getLocalUser(){
         return null;
     }
 
-    return JSON.parse(Userstr);
+    return JSON.stringify(Userstr);
+}
+
+export function setLocalUser(access_token){
+    localStorage.setItem("user", access_token);
 }
