@@ -16,6 +16,9 @@
                         <div class="form-group row">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
+                        <small id="autherror" class="form-text text-muted" v-if="authError">
+                            {{authError}}
+                        </small>
                     </form>
                 </div>
             </div>
@@ -50,10 +53,17 @@ export default {
 
                 })
         }
-    }
+    },
+    computed: {
+      authError(){
+        return this.$store.getters.authError;    
+      }  
+    },
 }
 </script>
 
-<style>
-
+<style scoped>
+    .text-muted{
+        color: red;
+    }
 </style>

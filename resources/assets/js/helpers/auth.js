@@ -5,7 +5,7 @@ export function login(credientials){
                 res(response.data);
             })
             .catch((err) => {
-                rej("Wrong email/Password");
+                rej({error: "Wrong email/Password"});
             })
     })
 }
@@ -17,7 +17,7 @@ export function getLocalUser(){
         return null;
     }
 
-    return JSON.stringify(Userstr);
+    return JSON.parse(Userstr);
 }
 
 export function setLocalUser(access_token){

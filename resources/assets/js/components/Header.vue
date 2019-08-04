@@ -7,23 +7,42 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
+      <template v-if="!currentUser">
+        
       <li class="nav-item active">
-        <router-link class="nav-link" to="/">Home<span class="sr-only">(current)</span></router-link>
+        <router-link class="nav-link" to="/Login">Login</router-link>
+      </li>
+        
+      <li class="nav-item active">
+        <router-link class="nav-link" to="/Register">Register</router-link>
+      </li>        
+        
+      </template>
+      <template v-else>
+      
+          
+      <li class="nav-item active">
+        <router-link class="nav-link" to="/">Home</router-link>
       </li>
       <li class="nav-item">
         <router-link class="nav-link" to="/About">About</router-link>
       </li>
+      <li class="nav-item">
+        <router-link class="nav-link" to="/Customers">Customers</router-link>
+      </li>
+        
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown
+          {{currentUser.name}}
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#" @click="logout">Logout</a>
           <a class="dropdown-item" href="#">Another action</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
       </li>
+      </template>
       <li class="nav-item">
         <a class="nav-link disabled" href="#">Disabled</a>
       </li>
@@ -40,6 +59,17 @@
 <script>
 export default {
     name: 'Header',
+    computed: {
+      currentUser(){
+        return this.$store.getters.currentUser;
+      }
+    },
+    methods: {
+      logout(){
+        this.$store.commit('logout');
+        this.$router.push('login');
+      }
+    },
     mounted() {
         console.log('Component mounted.')
     }
