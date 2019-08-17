@@ -22,7 +22,8 @@
                         <td>{{customer.email}}</td>
                         <td>{{customer.phone}}</td>
                         <td>
-                            <router-link :to="`/Customers/${customer.id}`">View</router-link>
+                            <router-link :to="`/Customers/View/${customer.id}`">View</router-link>
+                            <router-link :to="`/Customers/Edit/${customer.id}`">Edit</router-link>
                         </td>
                     </tr>
                 </template>

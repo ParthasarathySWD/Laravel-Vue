@@ -11,6 +11,7 @@ export default{
         loading: false,
         auth_error: null,
         customers: [],
+        customer: {},
     },
     mutations: {
         login(state){
@@ -35,7 +36,12 @@ export default{
         },
         updateCustomers(state, customers){
             state.customers = customers;
+        },
+        updateCustomer(state, id){
+            state.customer = state.customers.filter(customer => customer.id == Number(id));
         }
+
+
     },
     getters: {
         welcome(state){
@@ -58,6 +64,9 @@ export default{
         },
         customers(state){
             return state.customers;
+        },
+        customer(state){
+            return state.customer;
         }
     },
     actions: {
@@ -65,14 +74,14 @@ export default{
             context.commit("login");
         },
         getCustomers(context){
-            axios.get('/api/customers', {
-                headers: {
-                    "Authorization": `Bearer ${context.state.currentUser.token}`
-                }
-            })
+            axios.get('/api/customers')
             .then(response => {
                 context.commit('updateCustomers', response.data.customers);
             })
+        },
+        getCustomer(context, id){
+            debugger;
+            context.commit('updateCustomer', id);
         }
     }
 }

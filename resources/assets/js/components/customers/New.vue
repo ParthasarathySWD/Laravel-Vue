@@ -1,6 +1,6 @@
 <template>
     <div class="customer-new">
-        <form @submit.prevent="add">
+        <form @submit.prevent="addCustomer">
             <table class="table">
                 <tr>
                     <th>Name</th>
@@ -27,12 +27,22 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>
+                        <router-link to="/customers">Cancel</router-link>
+                    </td>
                     <td class="text-right">
                         <input type="submit" value="Create Customer" class="btn btn-primary">
                     </td>
                 </tr>
             </table>
         </form>
+        <div class="errors" v-if="errors">
+            <ul>
+                <li v-for="(error, name) in errors" :key="name">
+                    <strong>{{name}}</strong> {{error.join('\n')}}
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 
@@ -52,26 +62,47 @@ export default {
             errors: null,
         }
     },
+    computed: {
+        currentUser(){
+            return this.$store.getters.currentUser;
+        }
+    },
     methods: {
-        add(){
+        addCustomer(){
             this.errors = null;
             const constraints = this.getConstraints();
+            var errors = validate(this.$data.customer, constraints);
+
+            if(errors){
+                this.errors = errors;
+                return;
+            }
+
+            axios.post('/api/customers/new', this.$data.customer,{
+                headers: {
+                    "Authorization": `Bearer ${this.currentUser.token}`
+                }
+            })
+            .then((response)=>{
+                this.$router.push('/customers');
+            })
+
         },
         getConstraints(){
             return {
                 name: {
-                    presense: true,
+                    presence: true,
                     length: {
                         minimum: 3,
                         message: "Must be atleast 3 characters long",
                     }
                 },
                 email: {
-                    presense: true,
+                    presence: true,
                     email: true
                 },
                 phone: {
-                    presense: true,
+                    presence: true,
                     numericality: true,
                     length: {
                         minimum : 10,
@@ -79,7 +110,7 @@ export default {
                     }
                 },
                 website:{
-                    presense: true,
+                    presence: true,
                     url: true
                 }
             }
@@ -89,5 +120,9 @@ export default {
 </script>
 
 <style>
-
+.errors{
+    background: lightcoral;
+    border-radius: 5px;
+    padding: 21px 0px 2px 0px;
+}
 </style>
